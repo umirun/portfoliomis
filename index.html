@@ -10,20 +10,22 @@
         :root {
             --bg-color: #f0f2f5;
             --text-color: #1c1e21;
-            --card-bg: rgba(255, 255, 255, 0.13);
-            --card-shadow: rgba(0, 0, 0, 0.15);
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
             --logo-color: rgba(0, 123, 255, 0.7);
-            --accent-color: #629677;
-            --blur-amount: 10px;
+            --bg-image: url('https://picsum.photos/seed/lightmode/1920/1080.jpg');
+            --bg-blur: 0px;
+            --transition-speed: 0.5s;
         }
 
         body.dark-mode {
             --bg-color: #18191a;
             --text-color: #e4e6eb;
-            --card-bg: rgba(36, 37, 38, 0.13);
+            --card-bg: rgba(36, 37, 38, 0.8);
             --card-shadow: rgba(0, 0, 0, 0.5);
             --logo-color: rgba(255, 255, 255, 0.7);
-            --accent-color: #4dabf7;
+            --bg-image: url('https://picsum.photos/seed/darkmode/1920/1080.jpg');
+            --bg-blur: 3px;
         }
 
         * {
@@ -33,25 +35,52 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            background-image: url('https://picsum.photos/seed/nature-background/1920/1080.jpg');
-            min-height: 100vh;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: background-color 0.3s, color 0.3s;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
             cursor: pointer;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
+        }
+
+        /* --- Orqa Fon Rasmi --- */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            filter: blur(var(--bg-blur));
+            transition: filter var(--transition-speed), background-image var(--transition-speed);
+            z-index: -2;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        body.dark-mode .background-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         /* --- Tungi Rejm Tugmasi --- */
         .theme-switch-wrapper {
-            position: fixed;
+            position: absolute;
             top: 20px;
             right: 20px;
             z-index: 100;
@@ -77,9 +106,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background: linear-gradient(to right, #f0f2f5, #ccc);
             transition: .4s;
             border-radius: 34px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .slider:before {
@@ -96,39 +126,16 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         input:checked + .slider {
-            background-color: #2196F3;
+            background: linear-gradient(to right, #2196F3, #0d47a1);
         }
 
         input:checked + .slider:before {
             transform: translateX(26px);
             content: "🌙";
-        }
-
-        /* --- Sarlavha --- */
-        header {
-            text-align: center;
-            padding: 40px 20px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: 1px;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            max-width: 800px;
-            margin: 0 auto;
         }
 
         /* --- Asosiy Kontent --- */
@@ -139,26 +146,40 @@
             justify-content: center;
             padding: 20px;
             z-index: 10;
-            position: relative;
-            max-width: 1400px;
-            margin: 0 auto;
+            max-width: 1200px;
+            width: 100%;
         }
 
         .profile-card {
-            background: var(--card-bg);
-            border-radius: 17px;
-            padding: 20px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 40px rgba(129, 236, 174, 0.5);
-            color: #fff;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--card-shadow);
             overflow: hidden;
-            width: 420px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 280px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background-color var(--transition-speed);
+            position: relative;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover::before {
+            transform: scaleX(1);
         }
 
         .profile-card:hover {
-            transform: translateY(-15px);
+            transform: translateY(-15px) scale(1.02);
             box-shadow: 0 15px 40px var(--card-shadow);
         }
 
@@ -166,88 +187,67 @@
             text-decoration: none;
             color: inherit;
             display: block;
-            padding: 30px;
-        }
-
-        .profile-header {
+            padding: 30px 20px;
             position: relative;
-            margin-bottom: 20px;
+            z-index: 1;
         }
 
         .profile-card img {
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 6px solid rgba(255, 255, 255, 0.3);
+            border: 5px solid var(--bg-color);
             margin-bottom: 20px;
+            transition: transform 0.5s ease, border-color 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
         }
 
         .profile-card:hover img {
             transform: scale(1.05);
+            border-color: #4facfe;
         }
 
         .profile-card h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: all 0.3s ease;
         }
 
-        .profile-title {
-            font-size: 1.1rem;
-            color: var(--accent-color);
+        .profile-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
             margin-bottom: 15px;
-            font-weight: 500;
         }
 
-        .profile-bio {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-
-        .skill-tag {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .profile-links {
+        .social-links {
             display: flex;
             justify-content: center;
             gap: 15px;
+            margin-top: 15px;
         }
 
-        .profile-link {
+        .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.22);
-            color: #fff;
-            transition: background-color 0.3s, transform 0.3s;
+            background-color: rgba(79, 172, 254, 0.1);
+            color: #4facfe;
+            transition: all 0.3s ease;
         }
 
-        .profile-link:hover {
-            background-color: var(--accent-color);
+        .social-links a:hover {
+            background-color: #4facfe;
             color: white;
-            transform: scale(1.1);
+            transform: translateY(-5px);
         }
 
         /* --- Dasturlash Logolari Yog'ishi --- */
@@ -269,7 +269,7 @@
             color: var(--logo-color);
             user-select: none;
             animation: fall linear;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+            text-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
         }
 
         @keyframes fall {
@@ -278,153 +278,140 @@
             }
         }
 
-        /* --- Ekranga bosish ko'rsatkichi --- */
-        .click-hint {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.9rem;
+        /* --- Zamonaviy Animatsiyalar --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .profile-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .profile-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        /* --- Responsiv Dizayn --- */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .profile-card {
+                width: 90%;
+                max-width: 350px;
+            }
+
+            .theme-switch-wrapper {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-card {
+                width: 95%;
+            }
+
+            .profile-card img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-card h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* --- Yangi Qo'shilgan Elementlar --- */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
             z-index: 10;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(79, 172, 254, 0.3);
         }
 
-        /* --- Ishlayotgan odamlar animatsiyasi --- */
-        .working-people {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 200px;
-            height: 200px;
-            z-index: 5;
+        .header p {
+            font-size: 1.1rem;
             opacity: 0.8;
         }
 
-        .person {
+        .footer {
             position: absolute;
-            width: 60px;
-            height: 80px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 30px 30px 0 0;
+            bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            z-index: 10;
         }
 
-        .person::before {
-            content: "";
-            position: absolute;
-            top: -20px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.7);
+        /* --- Loading Animatsiyasi --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(79, 172, 254, 0.3);
+            border-top-color: #4facfe;
             border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        .person1 {
-            bottom: 0;
-            left: 20px;
-            animation: typing 3s infinite;
-        }
-
-        .person2 {
-            bottom: 0;
-            right: 20px;
-            animation: coding 4s infinite;
-        }
-
-        .desk {
-            position: absolute;
-            bottom: 0;
-            width: 80px;
-            height: 10px;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        .desk1 {
-            left: 10px;
-        }
-
-        .desk2 {
-            right: 10px;
-        }
-
-        .laptop {
-            position: absolute;
-            bottom: 10px;
-            width: 40px;
-            height: 25px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 3px;
-        }
-
-        .laptop1 {
-            left: 30px;
-        }
-
-        .laptop2 {
-            right: 30px;
-        }
-
-        @keyframes typing {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        @keyframes coding {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-3px) rotate(-2deg); }
-            75% { transform: translateY(-3px) rotate(2deg); }
-        }
-
-        /* --- Moslashuvchan dizayn --- */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .profile-card {
-                width: 100%;
-                max-width: 380px;
-            }
-
-            .working-people {
-                width: 150px;
-                height: 150px;
-            }
-
-            .person {
-                width: 45px;
-                height: 60px;
-            }
-
-            .person::before {
-                width: 30px;
-                height: 30px;
-                top: -15px;
-                left: 7px;
-            }
-
-            .desk {
-                width: 60px;
-            }
-
-            .laptop {
-                width: 30px;
-                height: 20px;
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
         }
     </style>
 </head>
 <body>
+    <!-- Orqa Fon Rasmi -->
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+
+    <!-- Loading Animatsiyasi -->
+    <div class="loader" id="loader">
+        <div class="loader-circle"></div>
+    </div>
 
     <!-- Tungi Rejm Tugmasi -->
     <div class="theme-switch-wrapper">
@@ -435,9 +422,9 @@
     </div>
 
     <!-- Sarlavha -->
-    <header>
+    <header class="header">
         <h1>Dasturchilar Portfoliolari</h1>
-        <p class="subtitle">Iqtidorli dasturchilarimizning ishlari va loyihalari bilan tanishing</p>
+        <p>Ishonchli va professionallikni o'z ichiga olgan jamoa</p>
     </header>
 
     <!-- Asosiy Kontent -->
@@ -445,31 +432,13 @@
         <!-- Profil 1 -->
         <div class="profile-card">
             <a href="https://umrbekp.netlify.app" target="_blank">
-                <div class="profile-header">
-                    <img src="men.jpg" alt="Umrbek rasmi">
-                    <h2>Umrbek</h2>
-                    <p class="profile-title">Full Stack Dasturchi</p>
-                </div>
-                <p class="profile-bio">
-                    5+ yillik tajribaga ega full stack dasturchi. React, Node.js va MongoDB texnologiyalari bo'yicha chuqur bilimga ega. Murakkab veb-ilovalar va API'lar yaratish bo'yicha tajribaga ega.
-                </p>
-                <div class="skills">
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">React</span>
-                    <span class="skill-tag">Node.js</span>
-                    <span class="skill-tag">MongoDB</span>
-                    <span class="skill-tag">Git</span>
-                </div>
-                <div class="profile-links">
-                    <a href="https://github.com" target="_blank" class="profile-link">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" class="profile-link">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://twitter.com" target="_blank" class="profile-link">
-                        <i class="fab fa-twitter"></i>
-                    </a>
+                <img src="men.jpg" alt="Dasturchi 1 rasmi">
+                <h2>Umrbek</h2>
+                <p>Full Stack Dasturchi</p>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </a>
         </div>
@@ -477,51 +446,22 @@
         <!-- Profil 2 -->
         <div class="profile-card">
             <a href="https://otabekovsproject.github.io/portfolios/" target="_blank">
-                <div class="profile-header">
-                    <img src="5469872930470098984.jpg" alt="Sanjarbek rasmi">
-                    <h2>Sanjarbek</h2>
-                    <p class="profile-title">Frontend Dasturchi</p>
-                </div>
-                <p class="profile-bio">
-                    Zamonaviy veb-interfeyslar yaratish bo'yicha mutaxassis. Vue.js, TypeScript va SASS kabi zamonaviy texnologiyalarni qo'llash orqali foydalanuvchi tajribasini yaxshilashga intiladi.
-                </p>
-                <div class="skills">
-                    <span class="skill-tag">Vue.js</span>
-                    <span class="skill-tag">TypeScript</span>
-                    <span class="skill-tag">SASS</span>
-                    <span class="skill-tag">Webpack</span>
-                    <span class="skill-tag">UI/UX</span>
-                </div>
-                <div class="profile-links">
-                    <a href="https://github.com" target="_blank" class="profile-link">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" class="profile-link">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://dribbble.com" target="_blank" class="profile-link">
-                        <i class="fab fa-dribbble"></i>
-                    </a>
+                <img src="5469872930470098984.jpg" alt="Dasturchi 2 rasmi">
+                <h2>Sanjarbek</h2>
+                <p>Frontend Dasturchi</p>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </a>
         </div>
     </main>
 
-    <!-- Ekranga bosish ko'rsatkichi -->
-    <div class="click-hint">
-        <i class="fas fa-mouse-pointer"></i>
-    </div>
-
-    <!-- Ishlayotgan odamlar animatsiyasi -->
-    <div class="working-people">
-        <div class="person person1"></div>
-        <div class="desk desk1"></div>
-        <div class="laptop laptop1"></div>
-        
-        <div class="person person2"></div>
-        <div class="desk desk2"></div>
-        <div class="laptop laptop2"></div>
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2023 Dasturchilar Portfoliolari. Barcha huquqlar himoyalangan.</p>
+    </footer>
 
     <!-- Logolar Yog'adigan Konteyner -->
     <div id="logo-rain-container"></div>
@@ -530,6 +470,7 @@
         // --- Tungi Rejm (Dark Mode) ---
         const darkModeToggle = document.getElementById('dark-mode-toggle');
         const body = document.body;
+        const bgImage = document.querySelector('.background-image');
 
         // Sahifa yuklanganda, saqlangan rejimni tekshirish
         const currentTheme = localStorage.getItem('theme');
@@ -551,7 +492,7 @@
 
         // --- Dasturlash Logolari Yog'ishi Animatsiyasi ---
         const logoRainContainer = document.getElementById('logo-rain-container');
-        const logos = ['</>', 'JS', 'PY', '⚛️', 'Vue', 'Git', '🐳', 'AWS', '🐍', 'SASS', 'TS', 'Node', 'PHP', '🅰️', '📱', '🌐', '🔧', '💻'];
+        const logos = ['</>', 'JS', 'PY', '⚛️', 'Vue', 'Git', '🐳', 'AWS', '🐍', 'SASS', 'TS', 'Node', 'PHP', '🅰️'];
 
         function createLogo() {
             const logo = document.createElement('div');
@@ -581,24 +522,25 @@
 
         // Ekranga istalgan joyga bosilganda logolarni yaratish
         body.addEventListener('click', (event) => {
-            // Agar bosilgan joy dark mode tugmasi yoki profil kartalari bo'lsa, hech narsa qilma
-            if (event.target.closest('.theme-switch-wrapper') || event.target.closest('.profile-card')) {
+            // Agar bosilgan joy dark mode tugmasi bo'lsa, hech narsa qilma
+            if (event.target.closest('.theme-switch-wrapper')) {
                 return;
             }
-            
             // Bir nechta logolarni bir vaqtda yaratish uchun sikl
             for (let i = 0; i < 5; i++) {
                 setTimeout(createLogo, i * 100); // Har bir logo 0.1 soniyadan keyin paydo bo'lsin
             }
         });
 
-        // Sahifa yuklanganda avtomatik ravishda bir nechta logo yaratish
+        // --- Loading Animatsiyasi ---
         window.addEventListener('load', () => {
-            for (let i = 0; i < 3; i++) {
-                setTimeout(createLogo, i * 500);
-            }
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1000);
         });
-    </script>
 
+        // --- Avtomatik Logo Yog'ishi ---
+        setInterval(createLogo, 2000);
+    </script>
 </body>
 </html>
